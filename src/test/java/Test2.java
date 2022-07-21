@@ -1,46 +1,92 @@
+import org.apache.maven.surefire.shared.lang3.time.StopWatch;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 public class Test2
 {
-    WebDriver driver = null;
+    RemoteWebDriver driver = null;
     public static String status = "passed";
     String username = Test1.username;
     String access_key = Test1.access_key;
 
-    String testURL = "https://todomvc.com/examples/react/#/";
-    String testURLTitle = "React • TodoMVC";
 
-    @BeforeMethod
+    /*
     @Parameters(value={"browser","version","platform", "resolution"})
     public void testSetUp(String browser, String version, String platform, String resolution) throws Exception
+    */
+    @BeforeMethod
+    public void testSetUp() throws Exception
     {
-        String platformName = System.getenv("HYPEREXECUTE_PLATFORM") != null ? System.getenv("HYPEREXECUTE_PLATFORM") : platform;
-        
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("build", "[HyperExecute - 2] Demonstration of the TestNG Framework");
-        capabilities.setCapability("name", "[HyperExecute - 2] Demonstration of the TestNG Framework");
+        capabilities.setCapability("build", "VR on Hyperexecute");
 
-        capabilities.setCapability("platform", platformName);
-        capabilities.setCapability("browserName", browser);
-        capabilities.setCapability("version", version);
 
+        capabilities.setCapability("platform", "Windows 10");
+        capabilities.setCapability("browserName", "Chrome");
+        capabilities.setCapability("version", "latest");
         capabilities.setCapability("tunnel",false);
         capabilities.setCapability("network",true);
         capabilities.setCapability("console",true);
         capabilities.setCapability("visual",true);
 
+        // SMART UI OPTIONS  :
+
+//        Hashtable<String, Integer> errorColor= new Hashtable<>();
+//        errorColor.put("red",200);
+//        errorColor.put("green",0);
+//        errorColor.put("blue",0);
+//
+//        HashMap<String,Object> output= new HashMap<String, Object>();
+//        output.put("errorColor",errorColor);//Output Difference error color
+//        output.put("errorType","movement");//Flat Differences/Movement
+//        output.put("transparency",0.1);// Set transparency of Output
+//        output.put("largeImageThreshold",200);// the granularity to which the comparison happens(the scale or level of detail in a set of data.)Range-100-1200
+//        output.put("useCrossOrigin",false);//source -localmachine
+//        output.put("outputDiff",true);//don't want to comparison set as false
+//
+//        HashMap<String, Object> sm=new HashMap<String, Object>();
+//        sm.put("output",output);
+//        sm.put("scaleToSameSize",false);//scale to same size
+//        sm.put("ignore","antialiasing");//remove picture grouping
+
+
+//        capabilities.setCapability("smartUI.options",sm);
+
+        // To set as a baseline
+        capabilities.setCapability("smartUI.baseline",true);
+
+
+
+        // Smart UI project name
+        capabilities.setCapability("smartUI.project","Sample_HE_VR_Project");
+
+
+
+
         try
         {
+            StopWatch driverStart = new StopWatch();
+            driverStart.start();
             driver = new RemoteWebDriver(new URL("https://" + username + ":" + access_key + "@hub.lambdatest.com/wd/hub"), capabilities);
+
+            SessionId session = ((RemoteWebDriver) driver).getSessionId();
+            System.out.println("--------2----------" + session + "----------2----------");
+            driverStart.stop();
+
+            float timeElapsed = driverStart.getTime() / 1000f;
+            System.out.println("Driver setup time " + "   " + timeElapsed);
         }
         catch (MalformedURLException e)
         {
@@ -49,53 +95,48 @@ public class Test2
         System.out.println("Started session");
     }
 
-    @Test(description="To Do App on React App")
-    public void test2_element_addition_1() throws InterruptedException
+    @Test(description="Visiting Lambdatest", groups= {"lt","lambdatest"} )
+    public void lambdatest() throws InterruptedException
     {
-        driver.get(testURL);
+
+        driver.get("https://lambdatest.com");
         Thread.sleep(5000);
+        driver.executeScript("smartui.takeScreenshot");
+        System.out.println("Screenshot captured! ");
 
-        /* Selenium Java 3.141.59 */
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        /* WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); */
 
-        /* Click on the Link */
-        By elem_new_item_locator = By.xpath("//input[@class='new-todo']");
-        WebElement elem_new_item = driver.findElement(elem_new_item_locator);
-
-        /* Add 5 items in the list */
-        Integer item_count = 10;
-
-        for (int count = 1; count <= item_count; count++)
-        {
-            /* Enter the text box for entering the new item */
-            elem_new_item.click();
-            elem_new_item.sendKeys("Adding a new item " + count + Keys.ENTER);
-            Thread.sleep(2000);
-        }
-
-        WebElement temp_element;
-
-        /* Now that the items are added, we mark the top three items as completed */
-        for (int count = 1; count <= item_count; count++)
-        {
-            Integer fixed_cta_count = 1;
-
-            /* Enter the text box for entering the new item */
-            /* Create a varying string to create a new XPath */
-            /* String xpath_str = "//ul[@class='todo-list']/li[" + count + "]" + "//input[@class='toggle']"; */
-            String xpath_str = "//ul[@class='todo-list']/li[" + fixed_cta_count + "]" + "//input[@class='toggle']";
-            temp_element = driver.findElement(By.xpath(xpath_str));
-
-            temp_element.click();
-            Thread.sleep(2000);
-            /* Toggle button to destroy */
-            driver.findElement(By.xpath("//li[@class='completed']//button[@class='destroy']")).click();
-            Thread.sleep(1000);
-        }
-
-        /* Once you are outside this code, the list would be empty */
     }
+    @Test(description="Visiting Tesla", groups= {"lt","tesla"} )
+    public void tesla() throws InterruptedException
+    {
+
+        driver.get("https://tesla.com");
+        Thread.sleep(5000);
+        driver.executeScript("smartui.takeScreenshot");
+        System.out.println("Screenshot captured! ");
+    }
+
+    @Test(description="Visiting google", groups= {"lt","google"} )
+    public void google() throws InterruptedException
+    {
+
+        driver.get("https://google.com");
+        Thread.sleep(5000);
+        driver.executeScript("smartui.takeScreenshot");
+        System.out.println("Screenshot captured! ");
+    }
+
+    @Test(description="Visiting Bing", groups= {"lt","bing"} )
+    public void bing() throws InterruptedException
+    {
+
+        driver.get("https://bing.com");
+        Thread.sleep(5000);
+        driver.executeScript("smartui.takeScreenshot");
+        System.out.println("Screenshot captured! ");
+    }
+
+
 
     @AfterMethod
     public void tearDown()

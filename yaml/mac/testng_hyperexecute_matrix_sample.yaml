@@ -19,7 +19,7 @@ cacheDirectories:
   - .m2
 
 matrix:
-  tests: ["Test_1", "Test_2", "Test_3", "Test_4" ]
+  tests: ["Test2" ]
 
 shell: bash
 

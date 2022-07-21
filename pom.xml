@@ -109,14 +109,14 @@
                   <suiteXmlFiles>
                       <suiteXmlFile>xml/testng_${platname}.xml</suiteXmlFile>
                   </suiteXmlFiles>
-                  <reuseForks>true</reuseForks>
-                  <forkCount>1</forkCount>
-                  <properties>
-                    <property>
-                      <name>testnames</name>
-                      <value>${selectedTests}</value>
-                    </property>
-                  </properties>
+<!--                  <reuseForks>true</reuseForks>-->
+<!--                  <forkCount>1</forkCount>-->
+<!--                  <properties>-->
+<!--                    <property>-->
+<!--                      <name>testnames</name>-->
+<!--                      <value>${selectedTests}</value>-->
+<!--                    </property>-->
+<!--                  </properties>-->
                 </configuration>
             </plugin>
             <plugin>

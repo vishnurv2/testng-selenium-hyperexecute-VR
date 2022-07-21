@@ -1,0 +1,16 @@
+# Created at 2022-07-21T13:41:53.715
+org.testng.TestNGException: 
+The test(s) <[Test2]> cannot be found.
+	at org.testng.TestNG.processCommandLineArgs(TestNG.java:356)
+	at org.testng.TestNG.initializeSuitesAndJarFile(TestNG.java:393)
+	at org.testng.TestNG.initializeEverything(TestNG.java:1040)
+	at org.testng.TestNG.run(TestNG.java:1052)
+	at org.apache.maven.surefire.testng.TestNGExecutor.run(TestNGExecutor.java:284)
+	at org.apache.maven.surefire.testng.TestNGXmlTestSuite.execute(TestNGXmlTestSuite.java:75)
+	at org.apache.maven.surefire.testng.TestNGProvider.invoke(TestNGProvider.java:119)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:428)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:562)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:548)
+
+
